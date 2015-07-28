@@ -2,40 +2,44 @@ function control() {
 	//Global game variables
 		//Contains all game objects
 		objs = [];
-		FRIC = 0.2;
+		FRIC = 0;
 		dt = 0;
+		keyPress = [];
 
 		var t = +new Date();
 		var fps = 60;
 		var drawFps = 0;
 
-	/*var num = 700;
-	var gUnit = Math.round(Math.sqrt(num/2));
-	for(var r = 0; r < 2 * gUnit; r++) {
-		for(var c = 0; c < gUnit; c++) {
-			var px = (r + 0.5) * (can.width / (2 * gUnit));
-		    var py = (c + 0.5) * (can.height / gUnit);
-		    objs.push(new Part(px, py, 10));
-		}
-	}*/
+	objs.push(new Part(can.width / 2, can.height / 2, 20));
 
-	for (var i = 0; i < 15; i++) {
-		for (var j = 0; j < 15; j++) {
-			objs.push(new Part(i * 15, j * 15, 5));
-			objs[objs.length - 1].v = new Vec(10, 5); 
-		}
+	for(var i = 0; i < (Math.random() * 700) + 100; i++) {
+		objs.push(new Part(can.width * Math.random(), can.height * Math.random(), (Math.random() * 20) + 2))
+		objs[objs.length - 1].v.x = (Math.random() * 10) - 5;
+		objs[objs.length - 1].v.y = (Math.random() * 10) - 5;
 	}
-	for (var i = 0; i < 15; i++) {
-		for (var j = 0; j < 15; j++) {
-			objs.push(new Part(canvas.width - (i * 15), canvas.height -  (j * 15), 5));
-			objs[objs.length - 1].v = new Vec(-10, -5); 
-		}
-	}
-	objs.push(new Part(can.width / 2, can.height / 2, 40));
-
-
 
 	function update() {
+		if (keyPress[0] === 'left') {
+			var f = new Vec();
+			f.setMagAng( (FRIC * objs[0].m) + 200, Math.PI);
+			objs[0].applyForce(f);
+		}
+		if (keyPress[0] === 'right') {
+			var f = new Vec();
+			f.setMagAng( (FRIC * objs[0].m) + 200, 0);
+			objs[0].applyForce(f);
+		}
+		if (keyPress[0] === 'up') {
+			var f = new Vec();
+			f.setMagAng( (FRIC * objs[0].m) + 200, 3 * Math.PI / 2);
+			objs[0].applyForce(f);
+		}
+		if (keyPress[0] === 'down') {
+			var f = new Vec();
+			f.setMagAng( (FRIC * objs[0].m) + 200, Math.PI / 2);
+			objs[0].applyForce(f);
+		}
+
 		for(var i = 0; i < objs.length; i++) {
 			objs[i].update();
 		}
@@ -50,7 +54,7 @@ function control() {
 		update();
 
 		//Redraw
-		ctx.clearRect(0, 0, can.width, can.height);
+		ctx.clearRect(0, 0, can.width, can.height);	
 
 		//Clac FPS every 500ms
 		drawFps += dt;
@@ -66,9 +70,11 @@ function control() {
 		ctx.fillText("Particles: " + objs.length, 20, can.height - 20);	
 
     	ctx.strokeStyle = '#0F0';
-		for(var i = 0; i < objs.length; i++) {
+		for(var i = 1; i < objs.length; i++) {
 			objs[i].draw();
 		}
+		ctx.strokeStyle = '#00F'
+		objs[0].draw();
 
 		// ...at next screen-draw
 		requestAnimationFrame(loop);
@@ -97,6 +103,41 @@ function control() {
 			objs[i].applyForce(force);
 		}
 	});
+
+	window.onkeydown = function(e) {
+   		var key = e.keyCode ? e.keyCode : e.which;
+
+   		if (key == 37 && keyPress[0] != 'left') {
+   			keyPress.splice(0, 0, 'left');
+   		}
+   		else if (key == 39 && keyPress[0] != 'right') {
+       		keyPress.splice(0, 0, 'right');
+   		}
+   		else if (key == 38 && keyPress[0] != 'up') {
+       		keyPress.splice(0, 0, 'up');
+   		}
+   		else if (key == 40 && keyPress[0] != 'down') {
+       		keyPress.splice(0, 0, 'down');
+   		}
+	}
+
+	window.onkeyup = function(e) {
+   		var key = e.keyCode ? e.keyCode : e.which;
+
+   		if (key == 37) {
+       		keyPress.splice(keyPress.indexOf('left'), 1);
+   		}
+   		else if (key == 39) {
+       		keyPress.splice(keyPress.indexOf('right'), 1);
+   		}
+   		else if (key == 38) {
+       		keyPress.splice(keyPress.indexOf('up'), 1);
+   		}
+   		else if (key == 40) {
+       		keyPress.splice(keyPress.indexOf('down'), 1);
+   		}
+   		console.log(keyPress);
+	}
 
 	loop();
 };
