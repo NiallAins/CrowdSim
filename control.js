@@ -2,25 +2,38 @@ function control() {
 	//Global game variables
 		//Contains all game objects
 		objs = [];
-		FRIC = 2;
+		FRIC = 0.2;
 		dt = 0;
 
 		var t = +new Date();
 		var fps = 60;
 		var drawFps = 0;
 
-	var num = 700;
+	/*var num = 700;
 	var gUnit = Math.round(Math.sqrt(num/2));
 	for(var r = 0; r < 2 * gUnit; r++) {
 		for(var c = 0; c < gUnit; c++) {
 			var px = (r + 0.5) * (can.width / (2 * gUnit));
 		    var py = (c + 0.5) * (can.height / gUnit);
-		    var pr = Math.ceil((Math.random() * 20));
+		    objs.push(new Part(px, py, 10));
+		}
+	}*/
 
-			objs.push(new Part(px, py, 3, 5));
+	for (var i = 0; i < 15; i++) {
+		for (var j = 0; j < 15; j++) {
+			objs.push(new Part(i * 15, j * 15, 5));
+			objs[objs.length - 1].v = new Vec(10, 5); 
 		}
 	}
-	objs.push(new Part(can.width / 2, can.height / 2, 50))
+	for (var i = 0; i < 15; i++) {
+		for (var j = 0; j < 15; j++) {
+			objs.push(new Part(canvas.width - (i * 15), canvas.height -  (j * 15), 5));
+			objs[objs.length - 1].v = new Vec(-10, -5); 
+		}
+	}
+	objs.push(new Part(can.width / 2, can.height / 2, 40));
+
+
 
 	function update() {
 		for(var i = 0; i < objs.length; i++) {
@@ -65,7 +78,7 @@ function control() {
 		var mouse = new Vec(e.clientX, e.clientY);
 
 		for(var i = 0; i < objs.length; i++) {
-			var mag = 500000 / mouse.dis(objs[i].p);
+			var mag = 100000 / mouse.dis(objs[i].p);
 			var ang = mouse.angWith(objs[i].p);
 			var force = new Vec();
 			force.setMagAng(mag, ang);
@@ -77,7 +90,7 @@ function control() {
 		var mouse = new Vec(e.clientX, e.clientY);
 
 		for(var i = 0; i < objs.length; i++) {
-			var mag = 5000 / mouse.dis(objs[i].p);
+			var mag = 1000 / mouse.dis(objs[i].p);
 			var ang = mouse.angWith(objs[i].p);
 			var force = new Vec();
 			force.setMagAng(mag, ang);
