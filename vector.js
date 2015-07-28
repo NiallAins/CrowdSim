@@ -10,10 +10,9 @@ function Vec(x, y) {
 	else
 		this.y = y;
 	};
-		Vec.prototype.createWith = function(mag, ang) {
-			this.x *= mag;
-			this.y *= mag;
-			this.setAng(ang);
+		Vec.prototype.setMagAng = function(mag, ang) {
+			this.x = Math.cos(ang) * mag;
+			this.y = Math.sin(ang) * mag;
 		};
 
 		Vec.prototype.add = function(v) {
@@ -40,6 +39,11 @@ function Vec(x, y) {
 
 		Vec.prototype.getMag = function() {
 			return Math.sqrt((this.x * this.x) + (this.y * this.y));
+		};
+
+		Vec.prototype.getNorm = function() {
+			var ang = this.getAng();
+			return new Vec(Math.cos(ang), Math.sin(ang));
 		};
 
 		Vec.prototype.setAng = function(rad) {
