@@ -4,6 +4,8 @@ function Part(x, y, r, m, e) {
 	this.v = new Vec(0, 0);
 	this.a = new Vec(0, 0);
 
+	this.rand = Math.random();
+
 	//Affecting forces
 	this.f = new Vec(0, 0);
 
@@ -107,10 +109,11 @@ function Part(x, y, r, m, e) {
 
 	Part.prototype.draw = function() {
 		ctx.beginPath();
-		ctx.arc(this.p.x, this.p.y, this.r , 0, 2*Math.PI);
+		ctx.strokeStyle = this.color;
+		ctx.arc(this.p.x, this.p.y, this.r , 0, 2 * Math.PI);
 		ctx.stroke();
 	};
 
 	Part.prototype.applyForce = function(F) {
 		this.f = this.f.add(F);
-	}
+	};
