@@ -8,15 +8,15 @@ function control() {
 	var t = +new Date();
 	var fps = 60;
 	var drawFps = 0;
+	ctx.strokeStyle = '#0F0';
 
 	//Starting conditions
 	for(var i = 0; i < 50; i++) {
-		objs.push(new Peep(can.width * Math.random(), can.height * Math.random(), (Math.random() * 5) + 5));	
-		objs[i].des =  new Vec(can.width * Math.random() , can.height * Math.random());
+		objs.push(new Peep(can.width * Math.random(), can.height * Math.random(), 300));
+		objs[i].v = new Vec();
+		objs[i].v.setMagAng(0.1, Math.random() * Math.PI * 2);
 	}
-	objs.push(new Peep(can.width / 2, can.height / 2, 10));
-	ctrlPeep = objs[objs.length - 1];
-	ctrlPeep.color = '#00F';
+	ctrlPeep = objs[0];
 
 	function loop() {
 		//Check time since last refresh in ms;
@@ -29,9 +29,7 @@ function control() {
 			var i = 0;
 			for(; i < objs.length; i++) {
 				if (Input.mousePos.dis(objs[i].p) < objs[i].r) {
-					ctrlPeep.color = '#0F0';
 					ctrlPeep = objs[i];
-					objs[i].color = '#00F';
 					i = objs.length + 1;
 				}
 			}
@@ -49,17 +47,9 @@ function control() {
 		}
 
 		//Draw game objects
-    	for(var i = 1; i < objs.length; i++) {
+    	for(var i = 0; i < objs.length; i++) {
 			objs[i].draw();
 		}
-
-		/*//Clac FPS every 500ms
-		drawFps += dt;
-		if (drawFps > 0.5) {
-			fps = Math.round(1 / dt);
-			drawFps %= 0.5;
-		}
-		ctx.fillText("FPS: " + fps, 20, can.height - 40);*/
 
 		// ...at next screen-draw
 		requestAnimationFrame(loop);

@@ -4,16 +4,10 @@ function Part(x, y, r, m, e) {
 	this.v = new Vec(0, 0);
 	this.a = new Vec(0, 0);
 
-	this.rand = Math.random();
-
 	//Affecting forces
 	this.f = new Vec(0, 0);
 
-	//Default radius
-	if (typeof(r) === 'undefined')
-		this.r = 10;
-	else
-		this.r = r;
+	this.r = r;
 
 	//Default mass
 	if (typeof(m) === 'undefined')

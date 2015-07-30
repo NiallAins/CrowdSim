@@ -1,9 +1,21 @@
 Peep.prototype = new Part();
-function Peep(x, y, m, s) {
+function Peep(x, y, s) {
 	this.p = new Vec(x, y);
 	this.des = false;
 	this.speed = s;
 	this.color = '#0F0';
+
+	//Load sprite
+	this.spriteSheet = new Image();
+	this.spriteSheet.src = 'images/sprs/guy_walk.png';
+	this.spr = {
+		img : this.spriteSheet,
+		w : 80,
+		h : 80, 
+		l : 6,
+		fps : 8,
+		frame : 0
+	};
 
 	//Default mass
 	if (typeof(m) === 'undefined')
@@ -11,7 +23,7 @@ function Peep(x, y, m, s) {
 	else
 		this.m = m;
 
-	this.r = m * 2;
+	this.r = 20;
 
 	//Default speed
 	if (typeof(s) === 'undefined')
@@ -20,13 +32,14 @@ function Peep(x, y, m, s) {
 		this.speed = s;
 };
 	Peep.prototype.update = function() {
+		//Call particle update for collsion detection and force applcaition & responce
 		Part.prototype.update.call(this);
 
 		//Go to destination
 		if (this.des != false) {
 			if (this.p.dis(this.des) < this.v.getMag()) {
 				this.p = this.des;
-				this.des =  new Vec(can.width * Math.random() , can.height * Math.random());
+				this.des =  false;
 			}
 			else {
 				des_f = new Vec();
@@ -61,5 +74,16 @@ function Peep(x, y, m, s) {
 	};
 
 	Peep.prototype.draw = function() {
-		Part.prototype.draw.call(this);
+		ctx.save();
+		ctx.translate(this.p.x, this.p.y);
+		if (ctrlPeep === this) {
+			ctx.beginPath();
+			ctx.arc(0, 0, 30, 0, 2 * Math.PI);
+			ctx.stroke();
+		}
+		if (this.v.getMag()) {
+			ctx.rotate(this.v.getAng());
+		}
+		util.drawSprite(this.spr, this.v.getMag());
+		ctx.restore();
 	};
