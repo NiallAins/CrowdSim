@@ -10,12 +10,12 @@ function control() {
 	var drawFps = 0;
 
 	//Starting conditions
-	for(var i = 0; i < 20; i++) {
-		for(var j = 0; j < 20; j ++) {
-			objs.push(new Peep(10 + (i * 30), 10 + (j * 30)));	
-		}
+	for(var i = 0; i < 50; i++) {
+		objs.push(new Peep(can.width * Math.random(), can.height * Math.random(), (Math.random() * 5) + 5));	
+		objs[i].des =  new Vec(can.width * Math.random() , can.height * Math.random());
 	}
-	ctrlPeep = objs[190];
+	objs.push(new Peep(can.width / 2, can.height / 2, 10));
+	ctrlPeep = objs[objs.length - 1];
 	ctrlPeep.color = '#00F';
 
 	function loop() {
@@ -26,13 +26,17 @@ function control() {
 
 		//Select new peep to control
 		if (Input.mousePress) {
-			for(var i = 0; i < objs.length; i++) {
+			var i = 0;
+			for(; i < objs.length; i++) {
 				if (Input.mousePos.dis(objs[i].p) < objs[i].r) {
 					ctrlPeep.color = '#0F0';
 					ctrlPeep = objs[i];
 					objs[i].color = '#00F';
-					i = objs.length;
+					i = objs.length + 1;
 				}
+			}
+			if (i == objs.length) {
+				ctrlPeep.des = Input.mousePos.clone();
 			}
 		}
 
