@@ -8,10 +8,13 @@ function control() {
 	var t = +new Date();
 	var fps = 60;
 	var drawFps = 0;
-	ctx.strokeStyle = '#0F0';
+
+	//Set background
+	var bg = new Image();
+	bg.src = 'images/bgs/test.png';
 
 	//Starting conditions
-	for(var i = 0; i < 50; i++) {
+	for(var i = 0; i < 10; i++) {
 		objs.push(new Peep(can.width * Math.random(), can.height * Math.random(), 300));
 		objs[i].v = new Vec();
 		objs[i].v.setMagAng(0.1, Math.random() * Math.PI * 2);
@@ -39,7 +42,8 @@ function control() {
 		}
 
 		//Redraw
-		ctx.clearRect(0, 0, can.width, can.height);	
+		//ctx.clearRect(0, 0, can.width, can.height);
+		ctx.drawImage(bg, 0, 0, can.width, can.height);
 
 		//Update game objects
 		for(var i = 0; i < objs.length; i++) {

@@ -1,14 +1,9 @@
 //Object contianing commonly used functions
 util = {
 	drawSprite : function(spr, speed) {
-		if (Math.round(speed)) {
-			spr.frame += dt;
-			spr.frame %= (1 / spr.fps) * spr.l;
-			var framePos = Math.floor(spr.frame / (1 / spr.fps));
-		}
-		else {
-			framePos = 0;
-		}
+		spr.frame += dt;
+		spr.frame %= (1 / (spr.fps * speed)) * spr.l;
+		var framePos = Math.floor(spr.frame / (1 / (spr.fps * speed)));
 		ctx.drawImage(	spr.img,
 						framePos * spr.w,
 						0,
