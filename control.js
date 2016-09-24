@@ -14,7 +14,7 @@ function control() {
 	bg.src = 'images/bgs/test.png';
 
 	//Starting conditions
-	for(var i = 0; i < 10; i++) {
+	for(var i = 0; i < 30; i++) {
 		objs.push(new Peep(can.width * Math.random(), can.height * Math.random(), 300));
 		objs[i].v = new Vec();
 		objs[i].v.setMagAng(0.1, Math.random() * Math.PI * 2);
